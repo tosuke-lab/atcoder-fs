@@ -1,0 +1,1 @@
+let combinationMod2 n r = if n = (n ||| r) then 1 else 0
