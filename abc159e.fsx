@@ -70,12 +70,11 @@ let main () =
         )
       
       let rec loop x1 x2 =
-        if pred x1 x2 then 0
-        else
-          let rec f x = if pred x1 x then f (x+1) else x
-          let x' = f x1
-          if x'=x1 then 10*1000
-          else 1 + loop x' x2
+        let rec eat x = if pred x1 x && x < x2 then eat (x+1) else x
+        let x' = eat x1
+        if x'=x1 then 10*1000
+        elif x'=x2 then 0
+        else 1 + loop x' x2
 
       let cnt = loop 0 (W-1) + popCnt split
       yield cnt
