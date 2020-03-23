@@ -34,29 +34,6 @@ module Array2D =
 
 // start
 
-// memoization
-let inline memo size f =
-  let dp = Array.create size None
-  let rec g x =
-    match dp.[x] with
-    | None ->
-      let v = f g x
-      dp.[x] <- Some v
-      v
-    | Some v -> v
-  g
-
-let inline memo2 size1 size2 f =
-  let dp = Array2D.create size1 size2 None
-  let rec g x y =
-    match dp.[x, y] with
-    | None ->
-      let v = f g x y
-      dp.[x, y] <- Some v
-      v
-    | Some v -> v
-  g
-
 // SegTree
 module SegTree =
   type SegTree<'a>(f: 'a -> 'a -> 'a, zero: 'a, num: int, data: 'a array) =
@@ -107,3 +84,38 @@ module SegTree =
   let query a b (segTree: SegTree<_>) = segTree.Query a b
   let modify (segTree: SegTree<_>) i f = segTree.[i] <- f segTree.[i]
 // SegTree
+
+let rec popCnt = function | 0 -> 0 | n -> popCnt (n>>>1) + if (n&&&1) = 1 then 1 else 0
+
+let N = readInt ()
+let S = readStr ()
+
+let charToSet c = 1<<<(int c - int 'a')
+
+let seg =
+  let src = S.ToCharArray() |> Array.map charToSet
+  SegTree.create (|||) 0 src
+
+type Query = Modify of int * Char | Range of int * int
+let readQuery () =
+  let qs = readStr().Split()
+  match Array.head qs with
+  | "1" -> Modify (int qs.[1], qs.[2].ToCharArray().[0])
+  | "2" -> Range (int qs.[1], int qs.[2])
+  | _ -> failwith "okasii"
+
+let Q = readInt ()
+
+let writer = new IO.StreamWriter(new IO.BufferedStream(Console.OpenStandardOutput()))
+seq {
+  for _ in 1..Q do
+    let q = readQuery ()
+    match q with
+    | Modify (i, c) ->  seg.[i-1] <- charToSet c
+    | Range (l, r) -> yield (SegTree.query (l-1) r seg |> popCnt)
+    
+}
+|> Seq.map (sprintf "%d")
+|> Seq.iter writer.WriteLine 
+
+writer.Dispose()
