@@ -107,3 +107,35 @@ module SegTree =
   let query a b (segTree: SegTree<_>) = segTree.Query a b
   let modify (segTree: SegTree<_>) i f = segTree.[i] <- f segTree.[i]
 // SegTree
+
+// ModInt
+type ModInt = MVal of int64
+
+[<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module ModInt =
+  let modulo = (int64 1e9)+7L
+
+  let inline init (x: ^a): ModInt =
+    let x = (int64 x) % modulo
+    match x with
+    | _ when x < 0L -> MVal (x + modulo)
+    | _ -> MVal x
+  
+  let value (MVal x) = x
+  
+type ModInt with
+  static member inline ( + ) (lhs: ModInt, rhs: ModInt) =
+    let (MVal x), (MVal y) = (lhs, rhs)
+    ModInt.init (x+y)
+  static member inline ( - ) (lhs: ModInt, rhs: ModInt) =
+    let (MVal x), (MVal y) = (lhs, rhs)
+    ModInt.init (x-y)
+  static member inline ( * ) (lhs: ModInt, rhs: ModInt) =
+    let (MVal x), (MVal y) = (lhs, rhs)
+    ModInt.init (x*y)
+  static member inline ( / ) (lhs: ModInt, rhs: ModInt) =
+    let rec pow n m = (if (m&&&1L)=1L then n else ModInt.init 1) * (if m=0L then ModInt.init 1 else (pow (n*n) (m>>>1)))
+    let invB = pow rhs (ModInt.modulo-2L)
+    lhs * invB
+// ModInt
