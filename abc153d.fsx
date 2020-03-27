@@ -34,3 +34,11 @@ module Array2D =
     arr.[i, j] <- f arr.[i, j]
 
 // start
+let H = readStr() |> int64
+
+let rec count acc h n =
+  if h=0L then acc
+  elif h=1L then acc+n
+  else count (acc+n) (h/2L) (n*2L)
+
+count 0L H 1L |> printfn "%d"
