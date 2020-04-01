@@ -139,3 +139,33 @@ type ModInt with
     let invB = pow rhs (ModInt.modulo-2L)
     lhs * invB
 // ModInt
+
+// Queue
+type Queue<'a> = Queue of ('a list * 'a list)
+
+[<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module Queue =
+  let empty = Queue([], [])
+  let ofList l = Queue(l, [])
+  let singleton x = Queue([x], [])
+  let check (Queue(f, r)) =
+    match (f, r) with
+    | ([], _) -> Queue(List.rev r, [])
+    | _ -> Queue(f, r)
+  let snoc x (Queue(f, r)) = Queue(f, x::r) |> check
+  let head (Queue(f, _)) = List.head f
+  let tryHead (Queue(f, _)) = List.tryHead f
+  let tail (Queue(f, r)) =
+    match f with
+    | [] -> failwith "queue is empty"
+    | _::f -> Queue(f, r) |> check
+  let tryUncons (Queue(f, r)) =
+    match f with
+    | [] -> None
+    | x::f -> Some(x, Queue(f, r) |> check)
+  let (|Cons|Nil|) q =
+    match tryUncons q with
+    | Some(h,t) -> Cons(h, t)
+    | None -> Nil
+// Queue
