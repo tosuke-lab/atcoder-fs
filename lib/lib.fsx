@@ -149,7 +149,7 @@ module Queue =
   let empty = Queue([], [])
   let ofList l = Queue(l, [])
   let singleton x = Queue([x], [])
-  let check (Queue(f, r)) =
+  let private check (Queue(f, r)) =
     match (f, r) with
     | ([], _) -> Queue(List.rev r, [])
     | _ -> Queue(f, r)
