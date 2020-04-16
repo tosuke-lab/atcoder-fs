@@ -1,10 +1,10 @@
 // Binominal Heap
 type Tree<'a when 'a: comparison> = Node of int * 'a * Tree<'a> list
-type BinominalHeap<'a when 'a: comparison> = Heap of Tree<'a> list
+type Heap<'a when 'a: comparison> = Heap of Tree<'a> list
 
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module BinominalHeap =
+module Heap =
   let empty = Heap []
   let singleton x = Heap [Node(0, x, [])]
  
@@ -60,12 +60,12 @@ module BinominalHeap =
       Cons(x, (merge (Heap(List.rev c)) (Heap hs)))
 
 
-let heap = [2; 3; 5; 4; 1] |> List.fold (fun h x -> BinominalHeap.insert x h) BinominalHeap.empty
+let heap = [2; 3; 5; 4; 1] |> List.fold (fun h x -> Heap.insert x h) Heap.empty
 
 let list =
   let rec go = function
-    | BinominalHeap.Nil -> []
-    | BinominalHeap.Cons(x, hs) -> x::(go hs)
+    | Heap.Nil -> []
+    | Heap.Cons(x, hs) -> x::(go hs)
   go heap
 
 printfn "%A" list
