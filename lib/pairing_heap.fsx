@@ -33,6 +33,7 @@ module Heap =
   let (|Cons|Nil|) = function
     | E -> Nil
     | T(x,hs) -> Cons(x, unify hs)
+// Pairing Heap
   
 let heap = [2; 3; 5; 1; 4] |> List.fold (fun h x -> Heap.insert x h) Heap.empty
 printfn "%A" heap
