@@ -45,3 +45,9 @@ module Array2D =
     arr.[i, j] <- f arr.[i, j]
 
 // start
+let (N,M) = readPair int int ()
+let A=reads int ()
+
+let x = (N-(A |> Array.sum))
+if x>=0 then x else -1
+|> printfn "%d"

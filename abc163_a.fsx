@@ -45,3 +45,5 @@ module Array2D =
     arr.[i, j] <- f arr.[i, j]
 
 // start
+let r = read double ()
+printfn "%f" (r*2.0*Math.PI)

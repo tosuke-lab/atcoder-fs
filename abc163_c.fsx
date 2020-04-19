@@ -45,3 +45,12 @@ module Array2D =
     arr.[i, j] <- f arr.[i, j]
 
 // start
+let N = read int ()
+let A = reads (int >> dec) ()
+
+let result =
+  let r = Array.create N 0
+  A |> Array.iter (fun x -> Array.modify r x inc)
+  r
+
+result |> Array.iter (printfn "%d")
