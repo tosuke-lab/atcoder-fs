@@ -3,6 +3,9 @@ open System
 // prelude
 let readStr () = stdin.ReadLine()
 
+let readInt () = stdin.ReadLine() |> int
+let readInts () = stdin.ReadLine().Split() |> Array.map int
+
 let read f () = readStr() |> f
 let reads f () = readStr().Split() |> Array.map f
 
@@ -42,3 +45,17 @@ module Array2D =
     arr.[i, j] <- f arr.[i, j]
 
 // start
+let N=read int ()
+let a=[| for _ in 1..N -> read int64 () |]
+
+let b=
+  let map =
+    a
+    |> Set.ofArray
+    |> Set.toSeq
+    |> Seq.mapi (fun i x -> (x, i))
+    |> Map.ofSeq
+  a
+  |> Array.map (flip Map.find map)
+
+b |> Array.iter (printfn "%d")
